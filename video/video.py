@@ -1,5 +1,6 @@
 # http://www.pyimagesearch.com/2015/12/21/increasing-webcam-fps-with-python-and-opencv/
 # http://www.pyimagesearch.com/2016/12/19/install-opencv-3-on-macos-with-homebrew-the-easy-way/
+# https://medium.com/towards-data-science/building-a-real-time-object-recognition-app-with-tensorflow-and-opencv-b7a2b4ebdc32
 
 import cv2
 import datetime
