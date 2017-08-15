@@ -24,6 +24,10 @@ CATEGORY_INDEX = label_map_util.create_category_index(CATEGORIES)
 
 
 def detect(graph, sess, image_np):
+    for i in range(image_np.shape[0]):
+        for j in range(image_np.shape[1]):
+            image_np[i,j,0], image_np[i,j,2] = image_np[i,j,2], image_np[i,j,0]
+
     image_np_expanded = np.expand_dims(image_np, axis=0)
     image_tensor = graph.get_tensor_by_name("image_tensor:0")
     boxes = graph.get_tensor_by_name('detection_boxes:0')
@@ -33,19 +37,25 @@ def detect(graph, sess, image_np):
     (boxes, scores, classes, num_detections) = sess.run(
         [boxes, scores, classes, num_detections],
         feed_dict={image_tensor: image_np_expanded})
-    # visualization_utils.visualize_boxes_and_labels_on_image_array(
-    #     image_np,
-    #     np.squeeze(boxes),
-    #     np.squeeze(classes).astype(np.int32),
-    #     np.squeeze(scores),
-    #     CATEGORY_INDEX,
-    #     use_normalized_coordinates=True,
-    #     line_thickness=8)
+
+    visualization_utils.visualize_boxes_and_labels_on_image_array(
+        image_np,
+        np.squeeze(boxes),
+        np.squeeze(classes).astype(np.int32),
+        np.squeeze(scores),
+        CATEGORY_INDEX,
+        use_normalized_coordinates=True,
+        line_thickness=8)
+
     draw.draw_shit_on_image_array(
         image_np,
         np.squeeze(boxes),
         np.squeeze(classes).astype(np.int32),
         np.squeeze(scores))
+
+    for i in range(image_np.shape[0]):
+        for j in range(image_np.shape[1]):
+            image_np[i,j,0], image_np[i,j,2] = image_np[i,j,2], image_np[i,j,0]
     return image_np
 
 

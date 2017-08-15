@@ -49,6 +49,4 @@ def draw_shit_on_image_array(image,
                     if replace_image[xx, yy, 0] != 255 \
                             or replace_image[xx, yy, 1] != 255 \
                             or replace_image[xx, yy, 2] != 255:
-                        image[x, y, 0] = replace_image[xx, yy, 2]
-                        image[x, y, 1] = replace_image[xx, yy, 1]
-                        image[x, y, 2] = replace_image[xx, yy, 0]
+                        image[x,y] = replace_image[xx,yy]
