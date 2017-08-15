@@ -10,8 +10,8 @@ from video.video import FPS, VideoStream
 from utils import label_map_util
 from utils import visualization_utils
 
-WIDTH = 480
-HEIGHT = 360
+WIDTH = 360
+HEIGHT = 240
 VIDEO_SOURCE = 0
 NUM_WORKER = 2
 QUEUE_SIZE = 5
@@ -73,13 +73,20 @@ if __name__ == '__main__':
     pool = Pool(processes=NUM_WORKER, initializer=worker, initargs=(input_q, output_q))
     video = VideoStream(src=VIDEO_SOURCE, width=WIDTH, height=HEIGHT).start()
     fps = FPS().start()
+    fourcc = cv2.VideoWriter_fourcc('M', 'J', 'P', 'G')
+    video_out = None
 
     while True:
         try:
             frame = video.read()
+            if not video_out:
+                video_out = cv2.VideoWriter("data/output.avi", fourcc, 1, (frame.shape[1], frame.shape[0]))
             input_q.put(frame)
             t = time.time()
-            cv2.imshow("Video", output_q.get())
+            output_frame = output_q.get()
+            print(output_frame.shape)
+            video_out.write(output_frame)
+            cv2.imshow("Video", output_frame)
             cv2.waitKey(1)
             fps.update()
             print('approx. FPS: {:.2f}'.format(fps.fps()))
@@ -91,4 +98,5 @@ if __name__ == '__main__':
     pool.terminate()
     fps.stop()
     video.stop()
+    video_out.release()
     cv2.destroyAllWindows()

@@ -1,3 +1,4 @@
+import draw
 import numpy as np
 import os
 import six.moves.urllib as urllib
@@ -82,6 +83,12 @@ with detection_graph.as_default(), tf.Session(graph=detection_graph) as sess:
             category_index,
             use_normalized_coordinates=True,
             line_thickness=8)
+        draw.draw_shit_on_image_array(
+            image_np,
+            np.squeeze(boxes),
+            np.squeeze(classes).astype(np.int32),
+            np.squeeze(scores))
+
         plt.figure(figsize=IMAGE_SIZE)
         plt.imshow(image_np)
         plt.savefig(image_path[:-4] + "_test.png")

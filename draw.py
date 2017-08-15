@@ -28,16 +28,16 @@ def draw_shit_on_image_array(image,
     box_to_draw_map = collections.defaultdict(list)
     for i in range(min(max_boxes_to_draw, boxes.shape[0])):
         if scores is None or scores[i] > min_score_threshold:
-            if classes[i] in classes_to_replace:
+            if classes[i] != 1:
                 box = tuple(boxes[i].tolist())
-                box_to_draw_map[box] = classes_to_replace[classes[i]]
+                box_to_draw_map[box] = 'shit.jpg'
 
     im_width, im_height, _ = image.shape
     for box, replace_image in box_to_draw_map.items():
         xmin, ymin, xmax, ymax = box
         ymin = int(ymin * im_height)
         ymax = int(ymax * (im_height - 1))
-        xmin = int(xmin * im_width) + 10
+        xmin = int(xmin * im_width + 0.05 * im_width)
         replace_image = IMAGE_MAP[replace_image]
         ri_width, ri_height, _ = replace_image.shape
         size = ymax - ymin
@@ -49,6 +49,6 @@ def draw_shit_on_image_array(image,
                     if replace_image[xx, yy, 0] != 255 \
                             or replace_image[xx, yy, 1] != 255 \
                             or replace_image[xx, yy, 2] != 255:
-                        image[x, y, 0] = replace_image[xx, yy, 0]
+                        image[x, y, 0] = replace_image[xx, yy, 2]
                         image[x, y, 1] = replace_image[xx, yy, 1]
-                        image[x, y, 2] = replace_image[xx, yy, 2]
+                        image[x, y, 2] = replace_image[xx, yy, 0]
