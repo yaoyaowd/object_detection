@@ -3,7 +3,7 @@ import os
 import numpy as np
 from PIL import Image
 
-IMAGE_PATHS = ['shit.png']
+IMAGE_PATHS = ['shit.jpg']
 IMAGES = [os.path.join('data', image) for image in IMAGE_PATHS]
 
 def init():
@@ -13,6 +13,7 @@ def init():
         (im_width, im_height) = image.size
         image_np = np.array(image.getdata()).reshape((im_height, im_width, 3)).astype(np.uint8)
         image_map[image_path[5:]] = image_np
+    return image_map
 
 IMAGE_MAP = init()
 
@@ -20,8 +21,8 @@ def draw_shit_on_image_array(image,
                              boxes,
                              classes,
                              scores,
-                             classes_to_replace={44: 'shit.png',
-                                                 47: 'shit.png'},
+                             classes_to_replace={44: 'shit.jpg',
+                                                 47: 'shit.jpg'},
                              max_boxes_to_draw=20,
                              min_score_threshold=.5):
     box_to_draw_map = collections.defaultdict(list)
@@ -36,10 +37,18 @@ def draw_shit_on_image_array(image,
         xmin, ymin, xmax, ymax = box
         ymin = int(ymin * im_height)
         ymax = int(ymax * (im_height - 1))
-        xmin = int(xmin * im_width)
-        xmax = int(xmax * (im_width - 1))
-        for y in range(ymin, ymax):
-            for x in range(xmin, xmax):
-                image[x, y, 0] = 0
-                image[x, y, 1] = 0
-                image[x, y, 2] = 0
+        xmin = int(xmin * im_width) + 10
+        replace_image = IMAGE_MAP[replace_image]
+        ri_width, ri_height, _ = replace_image.shape
+        size = ymax - ymin
+        for x in range(xmin - size, xmin):
+            for y in range(ymin, ymax):
+                if x >= 0 and x < im_width:
+                    xx = int(float(x - xmin + size) / size * ri_height)
+                    yy = int(float(y - ymin) / size * ri_width)
+                    if replace_image[xx, yy, 0] != 255 \
+                            or replace_image[xx, yy, 1] != 255 \
+                            or replace_image[xx, yy, 2] != 255:
+                        image[x, y, 0] = replace_image[xx, yy, 0]
+                        image[x, y, 1] = replace_image[xx, yy, 1]
+                        image[x, y, 2] = replace_image[xx, yy, 2]
