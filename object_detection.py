@@ -38,14 +38,14 @@ def detect(graph, sess, image_np):
         [boxes, scores, classes, num_detections],
         feed_dict={image_tensor: image_np_expanded})
 
-    visualization_utils.visualize_boxes_and_labels_on_image_array(
-        image_np,
-        np.squeeze(boxes),
-        np.squeeze(classes).astype(np.int32),
-        np.squeeze(scores),
-        CATEGORY_INDEX,
-        use_normalized_coordinates=True,
-        line_thickness=8)
+    # visualization_utils.visualize_boxes_and_labels_on_image_array(
+    #     image_np,
+    #     np.squeeze(boxes),
+    #     np.squeeze(classes).astype(np.int32),
+    #     np.squeeze(scores),
+    #     CATEGORY_INDEX,
+    #     use_normalized_coordinates=True,
+    #     line_thickness=8)
 
     draw.draw_shit_on_image_array(
         image_np,
@@ -94,7 +94,6 @@ if __name__ == '__main__':
             input_q.put(frame)
             t = time.time()
             output_frame = output_q.get()
-            print(output_frame.shape)
             video_out.write(output_frame)
             cv2.imshow("Video", output_frame)
             cv2.waitKey(1)

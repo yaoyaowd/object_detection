@@ -3,7 +3,7 @@ import os
 import numpy as np
 from PIL import Image
 
-IMAGE_PATHS = ['shit.jpg']
+IMAGE_PATHS = ['doge.jpg']
 IMAGES = [os.path.join('data', image) for image in IMAGE_PATHS]
 
 def init():
@@ -21,8 +21,6 @@ def draw_shit_on_image_array(image,
                              boxes,
                              classes,
                              scores,
-                             classes_to_replace={44: 'shit.jpg',
-                                                 47: 'shit.jpg'},
                              max_boxes_to_draw=20,
                              min_score_threshold=.5):
     box_to_draw_map = collections.defaultdict(list)
@@ -30,7 +28,7 @@ def draw_shit_on_image_array(image,
         if scores is None or scores[i] > min_score_threshold:
             if classes[i] != 1:
                 box = tuple(boxes[i].tolist())
-                box_to_draw_map[box] = 'shit.jpg'
+                box_to_draw_map[box] = 'doge.jpg'
 
     im_width, im_height, _ = image.shape
     for box, replace_image in box_to_draw_map.items():
