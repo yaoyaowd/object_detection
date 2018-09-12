@@ -1,5 +1,4 @@
 import cv2
-import draw
 import numpy as np
 import time
 import tensorflow as tf
@@ -38,20 +37,14 @@ def detect(graph, sess, image_np):
         [boxes, scores, classes, num_detections],
         feed_dict={image_tensor: image_np_expanded})
 
-    # visualization_utils.visualize_boxes_and_labels_on_image_array(
-    #     image_np,
-    #     np.squeeze(boxes),
-    #     np.squeeze(classes).astype(np.int32),
-    #     np.squeeze(scores),
-    #     CATEGORY_INDEX,
-    #     use_normalized_coordinates=True,
-    #     line_thickness=8)
-
-    draw.draw_shit_on_image_array(
+    visualization_utils.visualize_boxes_and_labels_on_image_array(
         image_np,
         np.squeeze(boxes),
         np.squeeze(classes).astype(np.int32),
-        np.squeeze(scores))
+        np.squeeze(scores),
+        CATEGORY_INDEX,
+        use_normalized_coordinates=True,
+        line_thickness=8)
 
     for i in range(image_np.shape[0]):
         for j in range(image_np.shape[1]):

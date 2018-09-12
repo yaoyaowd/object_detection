@@ -6,16 +6,16 @@ from PIL import Image
 IMAGE_PATHS = ['doge.jpg']
 IMAGES = [os.path.join('data', image) for image in IMAGE_PATHS]
 
-def init():
-    image_map = {}
-    for image_path in IMAGES:
-        image = Image.open(image_path)
-        (im_width, im_height) = image.size
-        image_np = np.array(image.getdata()).reshape((im_height, im_width, 3)).astype(np.uint8)
-        image_map[image_path[5:]] = image_np
-    return image_map
-
-IMAGE_MAP = init()
+# def init():
+#     image_map = {}
+#     for image_path in IMAGES:
+#         image = Image.open(image_path)
+#         (im_width, im_height) = image.size
+#         image_np = np.array(image.getdata()).reshape((im_height, im_width, 3)).astype(np.uint8)
+#         image_map[image_path[5:]] = image_np
+#     return image_map
+#
+#IMAGE_MAP = init()
 
 def draw_shit_on_image_array(image,
                              boxes,
